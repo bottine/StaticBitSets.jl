@@ -2,3 +2,6 @@ name = "StaticBitSets"
 uuid = "72d6c30d-a10b-4e7e-bc09-3079d9530bdf"
 authors = ["<remi.bottinelli@unine.ch>"]
 version = "0.1.0"
+
+[compat]
+julia = "1"
