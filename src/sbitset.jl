@@ -46,14 +46,13 @@ end
     Bool((s.pieces[d] >> (r-1)) & T(1))
 end
 
-@inline function isdisjoint(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned}
+@inline function Base.isdisjoint(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned}
     @inbounds @simd for i in 1:N
         (s1.pieces[i]&s2.pieces[i]) ≠ 0 && return false
     end
     return true
 end
-
-⟂(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned} = isdisjoint(s1,s2)
+⟂(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned} = isdisjoint(s1,s2) # WARNING: ⟂ is \perp, not \bot
 
 @inline function singleton_intersection(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned}
     ones_tot = 0

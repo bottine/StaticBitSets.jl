@@ -23,7 +23,7 @@ An element of type `SBitSet{N,T}` can store the integers `1:8*sizeof(T)*N`.
     println(y∪x)
     println(x~y)
     println(y⊆x)
-    println(y⊥x)
+    println(y⟂x)
     println(8∈y)
     println(8∈z)
 
