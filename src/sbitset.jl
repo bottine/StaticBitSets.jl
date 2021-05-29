@@ -37,12 +37,32 @@ Base.:(∪)(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned} = s1 | s2
 end
 Base.:(~)(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned} = s1 ∩ ~s2
 
-@inline function Base.:(⊆)(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned}
-   s1 ∩ s2 == s1 
+@inline function Base.:(⊆)(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned} 
+    @inbounds @simd for i in 1:N
+        !(s1.pieces[i]&s2.pieces[i] == s1.pieces[i]) && return false
+    end
+    return true
 end
 
 @inline function Base.xor(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned}
     SBitSet{N,T}(xor.(s1.pieces,s2.pieces))
+end
+
+"""
+    _divrem(n,N,)
+
+For ``1≤n≤N*W``, return ``d,r`` with ``1≤r≤W`` and ``W*(d-1)+r=n``.
+
+"""
+@inline function _divrem(n::Integer,N::Integer,W::Integer)
+   @assert 1 ≤ n ≤ N*W
+   (d,r) = divrem(n,W)
+    if r == 0
+        (d,r) = (d,W)
+    else
+        (d,r) = (d+1,r)
+    end
+    return (d,r)
 end
 
 @inline function Base.in(x::Integer,s::SBitSet{N,T}) where {N,T<:Unsigned}
@@ -72,22 +92,7 @@ end
     SBitSet{N,T}(ntuple(x->T(0),N))
 end
 
-"""
-    _divrem(n,N,)
 
-For ``1≤n≤N*W``, return ``d,r`` with ``1≤r≤W`` and ``W*(d-1)+r=n``.
-
-"""
-@inline function _divrem(n::Integer,N::Integer,W::Integer)
-   @assert 1 ≤ n ≤ N*W
-   (d,r) = divrem(n,W)
-    if r == 0
-        (d,r) = (d,W)
-    else
-        (d,r) = (d+1,r)
-    end
-    return (d,r)
-end
 
 @inline function SBitSet{N,T}(n::Integer) where {N,T<:Unsigned}
     (d,r) = _divrem(n,N,8*sizeof(T))
