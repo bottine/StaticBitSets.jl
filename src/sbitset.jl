@@ -41,6 +41,10 @@ Base.:(~)(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned} = s1 ∩ ~s2
    s1 ∩ s2 == s1 
 end
 
+@inline function Base.xor(s1::SBitSet{N,T},s2::SBitSet{N,T}) where {N,T<:Unsigned}
+    SBitSet{N,T}(xor.(s1.pieces,s2.pieces))
+end
+
 @inline function Base.in(x::Integer,s::SBitSet{N,T}) where {N,T<:Unsigned}
     (d,r) = _divrem(x,N,8*sizeof(T))
     Bool((s.pieces[d] >> (r-1)) & T(1))

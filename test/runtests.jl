@@ -64,6 +64,7 @@ end
     
     for (i,j) in collect(Iterators.product(1:length(data), 1:length(data)))
         @test sets[i] ∩ sets[j] == Set(bitsets[i] ∩ bitsets[j])
+        @test setdiff(sets[i],sets[j]) ∪ setdiff(sets[j],sets[i]) == Set(xor(bitsets[i],bitsets[j]))
         @test isempty(sets[i] ∩ sets[j]) == isempty(Set(bitsets[i] ∩ bitsets[j]))
         @test isempty(sets[i] ∩ sets[j]) == isdisjoint(sets[i],sets[j])
         @test (length(sets[i] ∩ sets[j]) == 1) == singleton_intersection(bitsets[i],bitsets[j])
