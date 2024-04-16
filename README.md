@@ -9,22 +9,22 @@ An element of type `SBitSet{N,T}` can store the integers `1:8*sizeof(T)*N`.
 
 ```julia
     
-    using StaticBitSets
-    
-    x = SBitSet{2,UInt8}(1,2,8)
-    y = SBitSet{2,UInt8}([1,2])
-    z = push(y,8)
-    
-    for i in z
-        println(i)
-    end
-    
-    println(y∩x)
-    println(y∪x)
-    println(x~y)
-    println(y⊆x)
-    println(y⟂x)
-    println(8∈y)
-    println(8∈z)
+using StaticBitSets
+
+x = SBitSet{2,UInt8}(1,2,8)
+y = SBitSet{2,UInt8}([1,2])
+z = push(y,8)
+
+for i in z
+    println(i)
+end
+
+println(y∩x)
+println(y∪x)
+println(x~y)
+println(y⊆x)
+println(y⟂x)
+println(8∈y)
+println(8∈z)
 
 ```

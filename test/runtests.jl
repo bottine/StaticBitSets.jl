@@ -78,3 +78,12 @@ end
 
 end
 
+@testset "symdiff" begin
+
+    x = SBitSet{2,UInt8}(1,2,8)
+    y = SBitSet{2,UInt8}([1,2])
+    z = SBitSet{2,UInt8}([8])
+
+    @test symdiff(x,y) == z
+
+end
